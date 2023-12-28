@@ -1,246 +1,340 @@
-map ss :source $HOME/.vimrc<CR>
-
-call plug#begin('~/.vim/plugged')
-
-    Plug 'vim-airline/vim-airline'
-    Plug 'vim-airline/vim-airline-themes'
-    Plug 'altercation/vim-colors-solarized'
-    Plug 'dracula/vim', {'as': 'dracula'}
-    Plug 'honza/vim-snippets'
-    Plug 'neoclide/coc.nvim', {'branch': 'release'}
-    Plug 'connorholyday/vim-snazzy'
-    Plug 'voldikss/vim-translator'
-    Plug 'preservim/nerdtree', { 'on':  'NERDTreeToggle' }
-    Plug 'psliwka/vim-smoothie'
-    Plug 'jiangmiao/auto-pairs'
-    Plug 'https://github.com/puremourning/vimspector'
-
-call plug#end()
-
 source $VIMRUNTIME/vimrc_example.vim
 
-set nu
-set rnu
-set mouse=a
-set clipboard=unnamedplus
-set ic scs
-set cul
-set bex=.bak                                  " backupext
-set fileencodings=utf8,cp936,gb18030,big5
-set ls=2                                      " laststatus 显示窗口状态条
-set stal=2                                    " showtabline 显示标题栏
-set shortmess-=S
-set updatetime=300
-set signcolumn=number
-set ambiwidth=double
-set splitbelow
-set splitright
-"set guioptions-=mT
+" With a map leader it's possible to do extra key combinations
+" like <leader>w saves the current file
+" make sure mapleader before every <leader> map, especially
+" be careful about that in other files being sourced
+let mapleader = ' '
 
-execute 'nohls'
-
-if &shell =~# 'fish'
-    set shell=sh
+" source plugs if exists, else prompt
+let my_plugin = split(&rtp, ',')[0] . '/' . 'my_plugin.vim'
+if filereadable(expand(my_plugin))
+    exec "source" my_plugin
+    unlet my_plugin
+else
+    echo $'not fount {my_plugin}, continue without plugins'
 endif
 
-autocmd BufRead *.fish set filetype =sh
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => General
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Sets how many lines of history VIM has to remember
+set history=500
 
-noremap Y y$
-"noremap . ;
-"noremap ; .
-let mapleader =" "
-"map <c-h> <c-w><c-h>
-"map <c-j> <c-w><c-j>
-"map <c-k> <c-w><c-k>
-"map <c-l> <c-w><c-l>
-" 至行首
-:cnoremap <C-A>		<Home>
-" 取回较新的命令行
-":cnoremap <C-N>		<Down>
-" 取回以前 (较旧的) 命令行
-":cnoremap <C-P>		<Up>
+" Enable filetype plugins
+filetype plugin on
+filetype indent on
 
-"
-"--------------------vimspector--------------------
-"
-let g:vimspector_install_gadgets = [ 'debugpy' ]
-let g:vimspector_enable_mappings = 'HUMAN'
-"
-"--------------------vim-snazzy--------------------
-"
-    "let g:SnazzyTransparent = 1
-    "colorscheme snazzy
-    colorscheme dracula
-"
-"--------------------vim-airline--------------------
-"
-    let g:airline_theme='dracula'
-    let g:airline_powerline_fonts = 0
-    "let g:airline_left_sep = ''
-    "let g:airline_right_sep = ''
-    " coc-nvim config
-    let g:airline#extensions#coc#enabled = 1
-    let airline#extensions#coc#stl_format_warn = '%W{[%w(#%fw)]}'
-    let airline#extensions#coc#stl_format_err = '%E{[%e(#%fe)]}'
-    let airline#extensions#coc#warning_symbol = 'Warning:'
-    let airline#extensions#coc#error_symbol = 'Error:'
-    let g:airline#extensions#tabline#enabled = 1
-    let g:airline#extensions#tabline#show_splits = 1
-    let g:airline#extensions#tabline#switch_buffers_and_tabs = 1
-    let g:airline#extensions#tabline#show_buffers = 1
-    let g:airline#extensions#tabline#alt_sep = 1
-    let g:airline#extensions#tabline#show_tabs = 1
-    let g:airline#extensions#tabline#show_tab_count = 1
-    let g:airline#extensions#tabline#buffers_label = 'B'
-    let g:airline#extensions#tabline#tabs_label = 'T'
-    let g:airline#extensions#tabline#overflow_marker = '…'
-    let g:airline#extensions#tabline#buffer_idx_mode = 1
-    nmap <leader>1 <Plug>AirlineSelectTab1
-    nmap <leader>2 <Plug>AirlineSelectTab2
-    nmap <leader>3 <Plug>AirlineSelectTab3
-    nmap <leader>4 <Plug>AirlineSelectTab4
-    nmap <leader>5 <Plug>AirlineSelectTab5
-    nmap <leader>6 <Plug>AirlineSelectTab6
-    nmap <leader>7 <Plug>AirlineSelectTab7
-    nmap <leader>8 <Plug>AirlineSelectTab8
-    nmap <leader>9 <Plug>AirlineSelectTab9
-    nmap <leader>, <Plug>AirlineSelectPrevTab
-    nmap <leader>. <Plug>AirlineSelectNextTab
-"
-"--------------------coc.nvim--------------------
-"
-    let g:coc_global_extensions = ['coc-jedi', 'coc-marketplace',
-                                  \'coc-vimlsp', 'coc-json','coc-translator']
-    "press 'tab' to complete
-    inoremap <silent><expr> <TAB>
-          \ pumvisible() ? "\<C-n>" :
-          \ <SID>check_back_space() ? "\<TAB>" :
-          \ coc#refresh()
-    inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-    
-    function! s:check_back_space() abort
-      let col = col('.') - 1
-      return !col || getline('.')[col - 1]  =~# '\s'
-    endfunction
-    
-    " Use <c-o> to trigger completion.
-    inoremap <silent><expr> <c-o> coc#refresh()
-    "press 'enter' to confirm completion
-    inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
-                                  \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-    " Use `[g` and `]g` to navigate diagnostics 导航到代码错误处
-    " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
-    nmap <silent> [g <Plug>(coc-diagnostic-prev)
-    nmap <silent> ]g <Plug>(coc-diagnostic-next)
-    " GoTo code navigation.
-    nmap <silent> gd <Plug>(coc-definition)
-    nmap <silent> gy <Plug>(coc-type-definition)
-    nmap <silent> gi <Plug>(coc-implementation)
-    nmap <silent> gr <Plug>(coc-references)
-    " Use K to show documentation in preview window.
-    nnoremap <silent> K :call <SID>show_documentation()<CR>
-    function! s:show_documentation()
-      if (index(['vim','help'], &filetype) >= 0)
-        execute 'h '.expand('<cword>')
-      elseif (coc#rpc#ready())
-        call CocActionAsync('doHover')
-      else
-        execute '!' . &keywordprg . " " . expand('<cword>')
-      endif
-    endfunction
-    " Highlight the symbol and its references when holding the cursor.
-    autocmd CursorHold * silent call CocActionAsync('highlight')
-    " Symbol renaming.
-    nmap <leader>rn <Plug>(coc-rename)
-    
-    " Formatting selected code.
-    xmap <leader>f  <Plug>(coc-format-selected)
-    nmap <leader>f  <Plug>(coc-format-selected)
-    
-    augroup mygroup
-      autocmd!
-      " Setup formatexpr specified filetype(s).
-      autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-      " Update signature help on jump placeholder.
-      autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-    augroup end
-    
-    " Applying codeAction to the selected region.
-    " Example: `<leader>aap` for current paragraph
-    xmap <leader>a  <Plug>(coc-codeaction-selected)
-    nmap <leader>a  <Plug>(coc-codeaction-selected)
-    
-    " Remap keys for applying codeAction to the current buffer.
-    nmap <leader>ac  <Plug>(coc-codeaction)
-    " Apply AutoFix to problem on the current line.
-    nmap <leader>qf  <Plug>(coc-fix-current)
-    
-    " Map function and class text objects
-    " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
-    xmap if <Plug>(coc-funcobj-i)
-    omap if <Plug>(coc-funcobj-i)
-    xmap af <Plug>(coc-funcobj-a)
-    omap af <Plug>(coc-funcobj-a)
-    xmap ic <Plug>(coc-classobj-i)
-    omap ic <Plug>(coc-classobj-i)
-    xmap ac <Plug>(coc-classobj-a)
-    omap ac <Plug>(coc-classobj-a)
-    
-    " Remap <C-f> and <C-b> for scroll float windows/popups.
-    " Note coc#float#scroll works on neovim >= 0.4.3 or vim >= 8.2.0750
-    nnoremap <nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-    nnoremap <nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
-    inoremap <nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
-    inoremap <nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
-    
-    " Use CTRL-S for selections ranges.
-    " Requires 'textDocument/selectionRange' support of language server.
-    nmap <silent> <C-s> <Plug>(coc-range-select)
-    xmap <silent> <C-s> <Plug>(coc-range-select)
-    
-    " Add `:Format` command to format current buffer.
-    command! -nargs=0 Format :call CocAction('format')
-    
-    " Add `:Fold` command to fold current buffer.
-    command! -nargs=? Fold :call     CocAction('fold', <f-args>)
-    
-    " Add `:OR` command for organize imports of the current buffer.
-    command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
-    
-    " Add (Neo)Vim's native statusline support.
-    " NOTE: Please see `:h coc-status` for integrations with external plugins that
-    " provide custom statusline: lightline.vim, vim-airline.
-    "set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-    
-    " Mappings for CoCList
-    " Show CocList.
-    nnoremap <silent><nowait> <leader>l  :<C-u>CocList<cr>
-    " Show all diagnostics.
-    nnoremap <silent><nowait> <leader>d  :<C-u>CocList diagnostics<cr>
-    " Manage extensions.
-    nnoremap <silent><nowait> <leader>e  :<C-u>CocList extensions<cr>
-    " Show commands.
-    nnoremap <silent><nowait> <leader>c  :<C-u>CocList commands<cr>
-    " Find symbol of current document.
-    "nnoremap <silent><nowait> <leader>o  :<C-u>CocList outline<cr>
-    "" Search workspace symbols.
-    "nnoremap <silent><nowait> <leader>s  :<C-u>CocList -I symbols<cr>
-    "" Do default action for next item.
-    "nnoremap <silent><nowait> <leader>j  :<C-u>CocNext<CR>
-    "" Do default action for previous item.
-    "nnoremap <silent><nowait> <leader>k  :<C-u>CocPrev<CR>
-    "" Resume latest coc list.
-    "nnoremap <silent><nowait> <leader>p  :<C-u>CocListResume<CR>
-    " CocTranslator 
-    "nmap <leader>t <Plug>(coc-translator-p)
-    "vmap <leader>t <Plug>(coc-translator-pv)
+" Set to auto read when a file is changed from the outside
+set autoread
+au FocusGained,BufEnter * silent! checktime
 
-"
-"--------------------vim-translator--------------------
-"
-    " Display translation in a window
-    nmap <silent> <leader>w <Plug>TranslateW
-    vmap <silent> <leader>w <Plug>TranslateWV
-    let g:translator_default_engines=['bing', 'google', 'haici', 'youdao']
-    nmap <silent> <leader>t :<c-u>NERDTreeToggle<CR>
+" Fast saving
+nmap <leader>w :w!<cr>
+
+" :W sudo saves the file
+" (useful for handling the permission-denied error)
+command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => VIM user interface
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Set 7 lines to the cursor - when moving vertically using j/k
+set so=5
+
+" Avoid garbled characters in Chinese language windows OS
+let $LANG='en'
+set langmenu=en
+source $VIMRUNTIME/delmenu.vim
+source $VIMRUNTIME/menu.vim
+
+" Turn on the Wild menu
+set wildmenu
+
+" Ignore compiled files
+set wildignore=*.o,*~,*.pyc
+if has("win16") || has("win32")
+    set wildignore+=.git\*,.hg\*,.svn\*
+else
+    set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
+endif
+
+" Always show current position
+set ruler
+
+" Height of the command bar
+set cmdheight=1
+
+" A buffer becomes hidden when it is abandoned
+set hid
+
+" Configure backspace so it acts as it should act
+set backspace=eol,start,indent
+set whichwrap+=<,>
+
+" Ignore case when searching
+set ignorecase
+
+" When searching try to be smart about cases
+set smartcase
+
+" Highlight search results
+set hlsearch
+
+" Makes search act like search in modern browsers
+set incsearch
+
+" Don't redraw while executing macros (good performance config)
+set lazyredraw
+
+" For regular expressions turn magic on
+set magic
+
+" Show matching brackets when text indicator is over them
+set showmatch
+
+" How many tenths of a second to blink when matching brackets
+set mat=2
+
+" No annoying sound on errors
+set noerrorbells
+set novisualbell
+set t_vb=
+" set timeout=500
+
+" Add a bit extra margin to the left
+set foldcolumn=0
+
+set nu
+set mouse=nvi
+set clipboard^=unnamedplus,unnamed
+set showtabline=2
+set shortmess-=S                    " show search count
+set updatetime=300
+set signcolumn=number
+set splitbelow
+set splitright
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Colors and Fonts
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Enable syntax highlighting
+syntax enable
+
+" Set regular expression engine automatically
+set regexpengine=0
+
+" Enable 256 colors palette in Gnome Terminal
+if $COLORTERM == 'gnome-terminal'
+    set t_Co=256
+endif
+
+colorscheme dracula
+
+" Set extra options when running in GUI mode
+if has("gui_running")
+    set guioptions-=T
+    set guioptions-=e
+    set t_Co=256
+    set guitablabel=%M\ %t
+endif
+
+" Set utf8 as standard encoding and en_US as the standard language
+set encoding=utf8
+set fileencodings=utf8,cp936,gbk,gb18030,big5
+
+" Use Unix as the standard file type
+set fileformats=unix,dos,mac
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Files, backups and undo
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Turn backup off, since most stuff is in SVN, git etc. anyway...
+set nobackup
+set nowb
+set noswapfile
+set noundofile
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Text, tab and indent related
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Use spaces instead of tabs
+set expandtab
+
+" Be smart when using tabs ;)
+set smarttab
+
+" 1 tab == 4 spaces
+set shiftwidth=4
+set tabstop=4
+
+" Linebreak on 500 characters
+set lbr
+set tw=120
+
+set ai "Auto indent
+set si "Smart indent
+set wrap "Wrap lines
+
+
+""""""""""""""""""""""""""""""
+" => Visual mode related
+""""""""""""""""""""""""""""""
+" Visual mode pressing * or # searches for the current selection
+" Super useful! From an idea by Michael Naumann
+
+function! <SID>CmdLine(str)
+    call feedkeys(":" . a:str)
+endfunction
+
+function! VisualSelection(direction, extra_filter) range
+    let l:saved_reg = @"
+    execute "normal! vgvy"
+
+    let l:pattern = escape(@", "\\/.*'$^~[]")
+    let l:pattern = substitute(l:pattern, "\n$", "", "")
+
+    if a:direction == 'gv'
+        call CmdLine("Ack '" . l:pattern . "' " )
+    elseif a:direction == 'replace'
+        call CmdLine("%s" . '/'. l:pattern . '/')
+    endif
+
+    let @/ = l:pattern
+    let @" = l:saved_reg
+endfunction
+
+vnoremap <silent> * :<C-U>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
+vnoremap <silent> # :<C-U>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Moving around, tabs, windows and buffers
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Disable highlight when <leader><cr> is pressed
+map <silent> <leader>n :noh<cr>
+
+" Smart way to move between windows
+map <C-J> <C-W>j
+map <C-K> <C-W>k
+map <C-H> <C-W>h
+map <C-L> <C-W>l
+map <leader>q <C-W>c
+
+map <leader>J <C-W>J
+map <leader>K <C-W>K
+map <leader>H <C-W>H
+map <leader>L <C-W>L
+
+map <C-Up> <C-W>+
+map <C-Down> <C-W>-
+map <C-Left> <C-W><
+map <C-Right> <C-W>>
+map <C-S-Up> 5<C-W>+
+map <C-S-Down> 5<C-W>-
+map <C-S-Left> 5<C-W><
+map <C-S-Right> 5<C-W>>
+
+" Close the current buffer
+map <leader>bd :bd<cr>
+
+" Close all the buffers
+map <leader>ba :bufdo bd<cr>
+
+map <leader>l :bnext<cr>
+map <leader>h :bprevious<cr>
+
+" Useful mappings for managing tabs
+map <leader>tn :tabnew<cr>
+map <leader>to :tabonly<cr>
+map <leader>td :tabclose<cr>
+map <leader>tl :tabnext<cr>
+map <leader>th :tabprevious<cr>
+map <leader>tm :tabmove
+
+" Switch CWD to the directory of the open buffer
+map <leader>cd :lcd %:p:h<cr>:pwd<cr>
+
+" Specify the behavior when switching between buffers
+try
+  set switchbuf=useopen,usetab,newtab
+catch
+endtry
+
+map <leader>u <C-U>
+map <C-S> <C-U>
+map <leader>d <C-D>
+map <leader>s <C-S>
+
+
+""""""""""""""""""""""""""""""
+" => Status line
+""""""""""""""""""""""""""""""
+" Always show the status line
+set laststatus=2
+
+" Format the status line
+" set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ ln:\ %l,%c
+
+" Returns true if paste mode is enabled
+function! HasPaste()
+    if &paste
+        return 'PASTE MODE  '
+    endif
+    return ''
+endfunction
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Editing mappings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Delete trailing white space on save, useful for some filetypes ;)
+fun! CleanExtraSpaces()
+    let save_cursor = getpos(".")
+    let old_query = getreg('/')
+    silent! %s/\s\+$//e
+    call setpos('.', save_cursor)
+    call setreg('/', old_query)
+endfun
+
+if has("autocmd")
+    autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee,* :call CleanExtraSpaces()
+endif
+
+nmap Y y$
+nmap U <C-R>
+map gh ^
+map gl $
+" cmdline 至行首
+cmap <C-A> <Home>
+cmap ;; %
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Misc
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+nohlsearch
+cabbrev ss source $MYVIMRC
+cabbrev vh vert help
+cabbrev h vert help
+
+" Toggle paste mode on and off
+map <leader>pp :setlocal paste!<cr> :set nu!<cr>
+
+" view current file using vim less mode
+map <leader>v :!$VIMRUNTIME/macros/less.sh %<cr>
+" lessmode func
+func LessInitFunc()
+  set nocursorcolumn nocursorline
+  set nonu nornu
+  mapclear
+  map s u
+  set showtabline=1
+endfunc
 
