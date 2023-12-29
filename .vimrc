@@ -7,6 +7,8 @@ source $VIMRUNTIME/vimrc_example.vim
 let mapleader = ' '
 
 " source plugs if exists, else prompt
+" windows file:
+"   C:\Users\a/vimfiles/my_plugin.vim
 let my_plugin = split(&rtp, ',')[0] . '/' . 'my_plugin.vim'
 if filereadable(expand(my_plugin))
     exec "source" my_plugin
@@ -56,6 +58,8 @@ set wildmenu
 set wildignore=*.o,*~,*.pyc
 if has("win16") || has("win32")
     set wildignore+=.git\*,.hg\*,.svn\*
+    set termguicolors
+    set pythonthreedll=python312.dll
 else
     set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
 endif
