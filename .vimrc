@@ -7,6 +7,8 @@ source $VIMRUNTIME/vimrc_example.vim
 let mapleader = ' '
 
 " source plugs if exists, else prompt
+" linux file:
+"   /home/ryan/.vim/my_plugin.vim
 " windows file:
 "   C:\Users\a/vimfiles/my_plugin.vim
 let my_plugin = split(&rtp, ',')[0] . '/' . 'my_plugin.vim'
