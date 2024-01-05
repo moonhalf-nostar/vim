@@ -137,7 +137,11 @@ if $COLORTERM == 'gnome-terminal'
     set t_Co=256
 endif
 
-colorscheme dracula
+try
+    colorscheme dracula
+catch
+    colo desert
+endtry
 
 " Set extra options when running in GUI mode
 if has("gui_running")
