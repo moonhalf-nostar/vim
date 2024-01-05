@@ -9,7 +9,7 @@ call plug#begin()
 
     " Make sure you use single quotes
 
-"   " - Automatically executes `filetype plugin indent on` and `syntax enable`.
+    " - Automatically executes `filetype plugin indent on` and `syntax enable`.
 
     " colorschemes
     Plug 'vim-scripts/peaksea'
@@ -69,7 +69,7 @@ call plug#begin()
     Plug 'tpope/vim-fugitive'
     Plug 'luochen1990/rainbow'
     Plug 'jiangmiao/auto-pairs'
-    Plug 'terryma/vim-multiple-cursors'
+    Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 
     Plug 'mbbill/undotree'
     nnoremap gn :UndotreeToggle<CR>:UndotreeFocus<CR>
