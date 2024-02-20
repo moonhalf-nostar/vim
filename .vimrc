@@ -335,7 +335,7 @@ cabbrev vh vert help
 cabbrev h vert help
 
 " Toggle paste mode on and off
-map <leader>pp :setlocal paste!<cr> :set nu!<cr>
+map <leader>pp :set nu!<cr>:setlocal paste!<cr>
 
 " view current file using vim less mode
 map <leader>v :!$VIMRUNTIME/macros/less.sh %<cr>
