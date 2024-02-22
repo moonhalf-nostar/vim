@@ -70,6 +70,8 @@ call plug#begin()
     Plug 'luochen1990/rainbow'
     Plug 'jiangmiao/auto-pairs'
     Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+    Plug 'mhinz/vim-startify'
+    Plug 'rickhowe/diffchar.vim'
 
     Plug 'mbbill/undotree'
     nnoremap gn :UndotreeToggle<CR>:UndotreeFocus<CR>
