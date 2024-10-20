@@ -8,9 +8,9 @@ let mapleader = ' '
 
 " source plugs if exists, else prompt
 " linux file:
-"   /home/ryan/.vim/my_plugin.vim
+"   ~/.vim/my_plugin.vim
 " windows file:
-"   C:\Users\a/vimfiles/my_plugin.vim
+"   ~/vimfiles/my_plugin.vim
 let my_plugin = split(&rtp, ',')[0] . '/' . 'my_plugin.vim'
 if filereadable(expand(my_plugin))
     exec "source" my_plugin
@@ -45,7 +45,7 @@ command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
 " => VIM user interface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Set 7 lines to the cursor - when moving vertically using j/k
-set so=5
+set so=0
 
 " Avoid garbled characters in Chinese language windows OS
 let $LANG='en'
@@ -58,9 +58,9 @@ set wildmenu
 
 " Ignore compiled files
 set wildignore=*.o,*~,*.pyc
+set termguicolors
 if has("win16") || has("win32")
     set wildignore+=.git\*,.hg\*,.svn\*
-    set termguicolors
     set pythonthreedll=python312.dll
 else
     set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
@@ -118,7 +118,7 @@ set clipboard^=unnamedplus,unnamed
 set showtabline=2
 set shortmess-=S                    " show search count
 set updatetime=300
-set signcolumn=number
+set signcolumn=yes
 set splitbelow
 set splitright
 
@@ -318,8 +318,10 @@ endif
 
 nmap Y y$
 nmap U <C-R>
-map gh ^
-map gl $
+map H ^
+map L $
+noremap gH H
+noremap gL L
 " cmdline 至行首
 cmap <C-A> <Home>
 cmap ;; %
