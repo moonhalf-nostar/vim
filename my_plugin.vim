@@ -107,3 +107,10 @@ call plug#end()
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     let g:rainbow_active = 1 "set to 0 if you want to enable it later via :RainbowToggle
 
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""" mileszs/ack.vim """
+let g:ackprg = "rg --smart-case --vimgrep"
+" let g:ackprg = "ag --vimgrep"
+" let g:ackprg = "grep -r --color=never --exclude-dir={.bzr,CVS,.git,.hg,.svn} -n"
+nnoremap <Leader>a :Ack!<Space>
