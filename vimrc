@@ -6,18 +6,12 @@ source $VIMRUNTIME/vimrc_example.vim
 " be careful about that in other files being sourced
 let mapleader = ' '
 
-" source plugs if exists, else prompt
+" source my plugin file
 " linux file:
 "   ~/.vim/my_plugin.vim
 " windows file:
 "   ~/vimfiles/my_plugin.vim
-let my_plugin = split(&rtp, ',')[0] . '/' . 'my_plugin.vim'
-if filereadable(expand(my_plugin))
-    exec "source" my_plugin
-    unlet my_plugin
-else
-    echo $'not fount {my_plugin}, continue without plugins'
-endif
+runtime my_plugin.vim
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
