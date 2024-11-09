@@ -266,7 +266,7 @@ map <leader>cd :lcd %:p:h<cr>:pwd<cr>
 
 " Specify the behavior when switching between buffers
 try
-  set switchbuf=useopen,usetab,newtab
+    set switchbuf=useopen,usetab,newtab
 catch
 endtry
 
@@ -337,10 +337,10 @@ map <leader>pp :set nu!<cr>:setlocal paste!<cr>
 map <leader>v :!$VIMRUNTIME/macros/less.sh %<cr>
 " lessmode func
 func LessInitFunc()
-  set nocursorcolumn nocursorline
-  set nonu nornu
-  mapclear
-  map s u
-  set showtabline=1
+    set nocursorcolumn nocursorline
+    set nonu nornu
+    mapclear
+    map s u
+    set showtabline=1
 endfunc
 
