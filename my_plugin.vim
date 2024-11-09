@@ -91,9 +91,13 @@ call plug#end()
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-map e <Plug>(easymotion-prefix)
+" *** easymotion ***
 noremap ee e
+map e <Plug>(easymotion-prefix)
 map <Plug>(easymotion-prefix)o <Plug>(easymotion-e)
+map <Plug>(easymotion-prefix)a <Plug>(easymotion-jumptoanywhere)
+map <Plug>(easymotion-prefix)l <Plug>(easymotion-lineforward)
+map <Plug>(easymotion-prefix)h <Plug>(easymotion-linebackward)
 let g:EasyMotion_smartcase = 1
 
 
