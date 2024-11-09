@@ -17,6 +17,7 @@ Plug 'dracula/vim'
 Plug 'vim-scripts/mayansmoke'
 Plug 'therubymug/vim-pyte'
 Plug 'tomasr/molokai'
+Plug 'joshdick/onedark.vim'
 
 
 " status-line
